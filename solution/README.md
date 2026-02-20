@@ -12,8 +12,8 @@ Before you begin, ensure you have the following:
 
 ### ✅ 1. Clone the GitHub Repository
 ```bash
-git clone https://github.com/microsoft/RHAIL-Claims-Denial-Navigator.git
-cd RHAIL-Claims-Denial-Navigator
+git clone https://github.com/voltaire-toledo/FRKD_RHAIL-CDNavigator.git
+cd FRKD_RHAIL-CDNavigator
 ```
 
 ---
@@ -35,7 +35,7 @@ pac --version
 The unpacked solution files are already in this repo. To create a `.zip` file for import into Power Apps:
 
 ```bash
-pac solution pack --folder ./Solution --zipfile ./ClaimsDenialNavigator.zip --packagetype Unmanaged
+pac solution pack --folder ./solution --zipfile ./ClaimsDenialNavigator.zip --packagetype Unmanaged
 ```
 
 **Notes:**
@@ -47,19 +47,19 @@ pac solution pack --folder ./Solution --zipfile ./ClaimsDenialNavigator.zip --pa
 
 ## Import the Claims Navigator App
 
-1. In a web browser, navigate to [Power Apps](https://make.preview.powerapps.com/).
+1. In a web browser, navigate to [Power Apps](https://make.powerapps.com/).
 
 2. Sign in with credentials with Admin access.
 
 3. In the menu on the left, select Solutions.
 
-4. Click Import Solution and select the Power App package ClaimsDenialNavigator.zip
+4. Click **Import Solution**, browse to and select the `ClaimsDenialNavigator.zip` file you created in the previous section.
 ![Claims Navigator Import](/assets/appuploadsolution.png)
 
 5. Click next until you reach Connections. Update the connections as needed until all 5 connections have a green check mark next to them.
 ![Claims Navigator Connections](/assets/appconnections.png)
 
-6. Fill out the Enviormental Variables and select Import and wait until the process is complete
+6. Fill out the Environmental Variables and select **Import**. Wait until the process is complete.
 ![Claims Navigator Variables](/assets/appenvvariable.png)
 
 ## Configure the PowerApp
