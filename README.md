@@ -9,13 +9,13 @@ Denial Navigator is an AI tool designed to help rural hospitals address and reso
 
 ![Denial Navigator Main Page](assets/apphome.png)
 
-![Denial Navigator Reccomendation](assets/appclaimwithfeedback.png)
+![Denial Navigator Recommendation](assets/appclaimwithfeedback.png)
 
 ## Licensing requirements
 * Power Apps license.
 
 
-See also: [Licensing overview for Power Platform](https://github.com/MicrosoftDocs/powerapps-docs/blob/main/power-platform/admin/pricing-billing-skus)
+See also: [Licensing overview for Power Platform](https://learn.microsoft.com/en-us/power-platform/admin/pricing-billing-skus)
 
 ## Applies to
 
@@ -33,9 +33,9 @@ See also: [Licensing overview for Power Platform](https://github.com/MicrosoftDo
 
 Solution|Author(s)
 --------|---------
-azureresources | [RHAIL Team](LinkToYourGitHubProfile), Microsoft
-data | [RHAIL Team](LinkToYourGitHubProfile), Microsoft
-solution | [RHAIL Team](LinkToYourGitHubProfile), Microsoft
+azureresources | [RHAIL Team](https://github.com/voltaire-toledo/FRKD_RHAIL-CDNavigator), Microsoft
+data | [RHAIL Team](https://github.com/voltaire-toledo/FRKD_RHAIL-CDNavigator), Microsoft
+solution | [RHAIL Team](https://github.com/voltaire-toledo/FRKD_RHAIL-CDNavigator), Microsoft
 
 ## Version history
 
@@ -48,7 +48,7 @@ Version|Date|Comments
 This solution does the following:
 
 * Parses 835 text files
-* Interacts with your own instance of Azure Open AI to generate reccomendations
+* Interacts with your own instance of Azure Open AI to generate recommendations
 * Inserts data in to Dataverse tables
 
 ## Prerequisites
@@ -108,26 +108,27 @@ CARC and RARC code definitions can be uploaded to the Dataverse table using the 
 
 ## Minimal Path to Awesome
 
+> For a full, step-by-step installation guide with prerequisites, expected outputs, and troubleshooting, see [docs/INSTALLATION.md](./docs/INSTALLATION.md).
+
 * [Download](./azureresources/) files in **azureresources** folder.
 * Replace parameter values in **AddResource.ps1** with your own and run the script.
-* [Download](./solution/RHAILUnmanaged.zip) the solution `.zip` from the `solution` folder
-* Within **https://make.powerapps.com**, import the `.zip` file via **Solutions** > **Import solution** > **Browse** and select the `.zip` file you just downloaded.
-* Click next. Create required connections and fill out enviormental variables values.
+* Pack the solution source from the `solution` folder using the Power Apps CLI (see [Using the Source Code](#using-the-source-code) below) to produce `ClaimsDenialNavigator.zip`.
+* Within **https://make.powerapps.com**, import the `.zip` file via **Solutions** > **Import solution** > **Browse** and select the `.zip` file you just packed.
+* Click next. Create required connections and fill out environmental variables values.
 * Submit and import solution.
 
 ## Using the Source Code
 
-You can also use the [Power Apps CLI](https://aka.ms/pac/docs) to pack the source code by following these steps::
+You can also use the [Power Apps CLI](https://aka.ms/pac/docs) to pack the source code by following these steps:
 
 * Clone the repository to a local drive
 * Pack the source files back into `.zip` file:
   ```bash
-  pac solution pack --folder pathtosourcefolder --zipfile pathtosolution  --processCanvasApps
+  pac solution pack --folder ./solution --zipfile ./ClaimsDenialNavigator.zip --packagetype Unmanaged
   ```
-  Making sure to replace `pathtosourcefolder` to point to the path to this sample's `sourcecode` folder, and `pathtosolution` to point to the path of this solution's `.zip` file (located under the `solution` folder)
-* Within **https://make.powerapps.com**, import the `.zip` file via **Solutions** > **Import solution** > **Browse** and select the `.zip` file you just downloaded.
+  Making sure to replace `./solution` with the path to this repo's `solution` folder, and `./ClaimsDenialNavigator.zip` with your desired output path.
+* Within **https://make.powerapps.com**, import the `.zip` file via **Solutions** > **Import solution** > **Browse** and select the `.zip` file you just packed.
 * Click next.
-* ...
 
 ## Disclaimer
 
