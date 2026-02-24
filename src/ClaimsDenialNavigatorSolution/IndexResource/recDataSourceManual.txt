@@ -1,0 +1,10 @@
+{
+  "name": "manualdatasourcerecs",
+  "type": "azureblob",
+  "credentials": {
+    "connectionString": "DefaultEndpointsProtocol=https;AccountName=7nlo4fzsdopoc;AccountKey=WB91oHNiZ9027+BJUl4UOzB4PNJwWWzT2ojeIE7vhgyiso83LcqXS6gBwCUw3t+aa5BtdVIFwaJw+ASttTla6Q==;"
+  },
+  "container": {
+    "name": "recs"
+  }
+}

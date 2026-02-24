@@ -8,16 +8,32 @@ This document consolidates all installation steps for the Claims Denial Navigato
 
 ## Table of Contents
 
-1. [Prerequisites](#prerequisites)
-2. [Architecture Overview](#architecture-overview)
-3. [Step 1 — Provision Azure Resources](#step-1--provision-azure-resources)
-4. [Step 2 — Create the SharePoint Document Library](#step-2--create-the-sharepoint-document-library)
-5. [Step 3 — Pack the Power Apps Solution](#step-3--pack-the-power-apps-solution)
-6. [Step 4 — Import the Solution into Power Apps](#step-4--import-the-solution-into-power-apps)
-7. [Step 5 — Configure the App](#step-5--configure-the-app)
-8. [Step 6 — Upload Code Definitions](#step-6--upload-code-definitions)
-9. [Environment Variable Reference](#environment-variable-reference)
-10. [Troubleshooting](#troubleshooting)
+- [Denial Navigator — Installation Guide](#denial-navigator--installation-guide)
+  - [Table of Contents](#table-of-contents)
+  - [Prerequisites](#prerequisites)
+  - [Architecture Overview](#architecture-overview)
+  - [Step 1 — Provision Azure Resources](#step-1--provision-azure-resources)
+    - [1.1 Edit Required Variables](#11-edit-required-variables)
+    - [1.2 Run the Script](#12-run-the-script)
+    - [1.3 Expected Outputs](#13-expected-outputs)
+    - [1.4 Collect Values for Later](#14-collect-values-for-later)
+  - [Step 2 — Create the SharePoint Document Library](#step-2--create-the-sharepoint-document-library)
+    - [Required Library Columns](#required-library-columns)
+    - [Record Your SharePoint Details](#record-your-sharepoint-details)
+  - [Step 3 — Pack the Power Apps Solution](#step-3--pack-the-power-apps-solution)
+    - [3.1 Clone the Repository](#31-clone-the-repository)
+    - [3.2 Install Power Platform CLI](#32-install-power-platform-cli)
+    - [3.3 Pack the Solution](#33-pack-the-solution)
+  - [Step 4 — Import the Solution into Power Apps](#step-4--import-the-solution-into-power-apps)
+  - [Step 5 — Configure the App](#step-5--configure-the-app)
+  - [Step 6 — Upload Code Definitions](#step-6--upload-code-definitions)
+  - [Environment Variable Reference](#environment-variable-reference)
+  - [Troubleshooting](#troubleshooting)
+    - [Azure Deployment Fails](#azure-deployment-fails)
+    - [JSON Gets Cut Off in Claims Processing](#json-gets-cut-off-in-claims-processing)
+    - [Power Apps Import Fails](#power-apps-import-fails)
+    - [Search Indexes Not Populating](#search-indexes-not-populating)
+    - [App Shows Blank SharePoint iFrame](#app-shows-blank-sharepoint-iframe)
 
 ---
 
@@ -32,10 +48,12 @@ Before starting, ensure you have the following:
 | **Azure subscription ID** | Found in **Subscriptions** in the Azure portal. |
 | **PowerShell** | Version 5.1+ or PowerShell 7+. Run `$PSVersionTable.PSVersion` to check. |
 | **Azure CLI** | Run `az --version` to check. Use [`InstallAzureCLI.ps1`](../azureresources/InstallAzureCLI.ps1) to install if missing (Windows only). |
-| **Power Platform CLI (`pac`)** | Install via npm: `npm install -g @microsoft/powerplatform-cli`. Verify with `pac --version`. |
+| **Power Platform CLI (`pac`)** | Recommended: Install the **Power Platform VS Code Extension**. Alternatively, use `dotnet tool install --global Microsoft.PowerApps.CLI.Tool`. |
 | **Microsoft 365 license** | SharePoint is included in standard M365 plans. |
 | **Power Apps Premium license** | Required for each user of the app. See [Licensing overview](https://learn.microsoft.com/en-us/power-platform/admin/pricing-billing-skus). |
 
+!!! Note:
+    The method of useing `npm install -g @microsoft/powerplatform-cli` was phased out in November 2023. Please refer to the [Microsoft Installation Instructions](https://learn.microsoft.com/en-us/power-platform/developer/cli/introduction?WT.mc_id=power-81315-dlaskewitz&tabs=linux-macos#install-microsoft-power-platform-cli) to determine which method to use to install the `pac` CLI command.
 ---
 
 ## Architecture Overview
@@ -139,12 +157,12 @@ Create or configure a SharePoint library with the following columns:
 
 | Column Type | Internal Name | Required |
 |---|---|:---:|
-| Single line of text | `Name` | Yes |
+| Single line of text | `Name` | Yes (Default) |
 | Multiple lines of text | `Message` | Yes |
-| Date and Time | `Modified` | Yes |
-| Person | `ModifiedBy` | Yes |
+| Date and Time | `Modified` | System |
+| Person | `ModifiedBy` | System |
 
-> **Note**: The `Modified` and `ModifiedBy` columns are standard SharePoint columns and exist by default. You do not need to create them.
+> **Note**: `Name`, `Modified`, and `ModifiedBy` are standard SharePoint columns. `Name` is required by default, while `Modified` and `ModifiedBy` are managed automatically by the system; you do not need to (and cannot) manually set their "Required" property.
 
 ### Record Your SharePoint Details
 
@@ -152,14 +170,19 @@ After creating the library, note:
 
 | Value | Example |
 |---|---|
-| **SharePoint Site URL** | `https://contoso.sharepoint.com/sites/DenialNavigator` |
-| **Library Name** | `835Files` |
+| **SharePoint Site URL** | `https://proventuras.sharepoint.com/` |
+| **Library Name** | `RHAILClaimFiles` |
 
 ---
 
 ## Step 3 — Pack the Power Apps Solution
 
-The solution source code is in the `solution/` folder of this repository. You must pack it into a `.zip` file before importing into Power Apps.
+### 3.0 Source vs. Bundle Distinction
+> **Important**: If you have seen the installation video, you may notice a ZIP file containing PDFs and folders. That is a **Deployment Bundle**. This repository contains the **Source Code**. 
+> 
+> The `pac solution pack` command creates the **Power Platform Solution Zip** (the App and Flows). You must handle Azure Storage assets (like PDFs for the `recs` container) separately by uploading them via the Azure Portal.
+
+The solution source code is located in the `src/ClaimsDenialNavigatorSolution/` folder. This directory contains the unpacked XML, JSON, and YAML files that define the application.
 
 ### 3.1 Clone the Repository
 
@@ -173,21 +196,22 @@ cd FRKD_RHAIL-CDNavigator
 If not already installed:
 
 ```bash
-npm install -g @microsoft/powerplatform-cli
+dotnet tool install --global Microsoft.PowerApps.CLI.Tool
 ```
 
 Verify:
 
 ```bash
-pac --version
+pac test
+pac tool list
 ```
 
 ### 3.3 Pack the Solution
 
-Run from the repository root:
+Open a terminal in the repository root and run the following command. This uses the Power Platform CLI to aggregate the source files into a single unmanaged solution file.
 
 ```bash
-pac solution pack --folder ./solution --zipfile ./ClaimsDenialNavigator.zip --packagetype Unmanaged
+pac solution pack --folder ./src/ClaimsDenialNavigatorSolution --zipfile ./src/ClaimsDenialNavigator.zip --packagetype Unmanaged
 ```
 
 **Expected output**: A file named `ClaimsDenialNavigator.zip` is created in the repository root.

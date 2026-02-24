@@ -1,0 +1,105 @@
+Contractual Obligations (CO)
+CO45: Charges exceed contracted/legislated fee arrangement.
+Recommendation: Verify fee schedule and contract terms with the payer.
+
+
+
+CO26: Custom Code for AJ Test
+Recommendation: Ask Anup the recommendation steps
+
+
+CO42: Charges exceed our fee schedule or maximum allowable amount.
+
+Recommendation: Adjust charges to comply with the payer's fee schedule.
+CO97: Payment is included in the allowance for another service/procedure.
+
+Recommendation: Ensure the correct bundling of services and re-submit if necessary.
+CO109: Claim/service not covered by this payer/contractor. You must send the claim/service to the correct payer/contractor.
+
+Recommendation: Submit the claim to the appropriate payer.
+CO151: Payment adjusted because the payer deems the information submitted does not support this level of service.
+
+Recommendation: Review the documentation and provide additional information to justify the level of service.
+CO170: Payment is denied when performed/billed by this type of provider.
+
+Recommendation: Verify provider eligibility and credentialing with the payer.
+Other Adjustments (OA)
+OA23: The impact of prior payer(s) adjudication including payments and/or adjustments.
+
+Recommendation: Review previous payments and adjustments from other payers.
+OA18: Duplicate claim/service.
+
+Recommendation: Verify that the service was not previously billed and paid.
+OA119: Benefit maximum for this time period or occurrence has been reached.
+
+Recommendation: Confirm the patient’s benefit limits and consider appealing if an error is suspected.
+OA96: Non-covered charge(s).
+
+Recommendation: Check the patient’s coverage details and determine if the service is excluded from their plan.
+OA144: Incentive adjustment, e.g., preferred product/service.
+
+Recommendation: Review payer's incentive programs and adjust billing as necessary.
+OA181: Procedure code was invalid on the date of service.
+
+Recommendation: Use the correct procedure code based on the date of service and resubmit the claim.
+Payer Initiated Reductions (PI)
+PI119: Benefit maximum for this time period or occurrence has been reached.
+
+Recommendation: Confirm patient’s benefit limits and consider an appeal if necessary.
+PIA1: Claim/service denied.
+
+Recommendation: Verify the reason for denial, check coverage, and submit any required documentation.
+Patient Responsibility (PR)
+PR1: Deductible amount.
+
+Recommendation: Inform the patient about their deductible amount due.
+PR2: Coinsurance amount.
+
+Recommendation: Inform the patient about their coinsurance liability.
+PR3: Co-payment amount.
+
+Recommendation: Inform the patient about their co-payment amount due.
+PR19: Claim/service lacks information which is needed for adjudication.
+
+Recommendation: Provide the required information to the payer.
+PR27: Expenses incurred after coverage terminated.
+
+Recommendation: Verify coverage dates and inform the patient.
+PR96: Non-covered charge(s).
+
+Recommendation: Check the patient’s coverage details and inform the patient about non-covered services.
+Claim Adjustment Reason Codes (CARCs)
+CARC45: Charges exceed contracted/legislated fee arrangement.
+
+Recommendation: Verify fee schedule and contract terms with the payer.
+CARC96: Non-covered charge(s).
+
+Recommendation: Verify patient’s coverage details and determine if the service is excluded from their plan.
+CARC119: Benefit maximum for this time period or occurrence has been reached.
+
+Recommendation: Confirm patient’s benefit limits and consider appealing if an error is suspected.
+CARC197: Precertification/authorization/notification absent.
+
+Recommendation: Obtain the necessary precertification or authorization and resubmit the claim.
+CARC204: This service/equipment/drug is not covered under the patient’s current benefit plan.
+
+Recommendation: Verify the patient’s benefit plan and coverage details.
+CARC208: National Provider Identifier - Not matched.
+
+Recommendation: Verify the NPI used and ensure it matches the provider’s registered information.
+Remittance Advice Remark Codes (RARCs)
+N130: Consult plan benefit documents/guidelines for information about restrictions for this service.
+
+Recommendation: Review plan documents for service restrictions.
+M62: Missing/incomplete/invalid treatment authorization code.
+
+Recommendation: Provide a valid authorization code.
+M15: Separately billed services/tests have been bundled as they are considered components of the same procedure. Separate payment is not allowed.
+
+Recommendation: Ensure services are bundled correctly per payer guidelines.
+N20: Service not payable with other service rendered on the same date.
+
+Recommendation: Verify service bundling rules and resubmit appropriately.
+M53: Missing/incomplete/invalid days or units of service.
+
+Recommendation: Provide the correct days or units of service.

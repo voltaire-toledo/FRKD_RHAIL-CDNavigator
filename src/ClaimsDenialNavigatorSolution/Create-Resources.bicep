@@ -1,6 +1,8 @@
 @description('Azure region where resources should be deployed')
 param location string = resourceGroup().location
 
+//param rgName string = resourceGroup().name
+
 @description('UTC timestamp used to create distinct deployment scripts for each deployment')
 param utcValue string = utcNow()
 
@@ -18,22 +20,12 @@ param filename string = 'SubmittedUserFeedback.txt'
 
 @minLength(3)
 @maxLength(24)
-@description('Provide a name for the search service. Use only lower case letters and numbers. The name must be unique across Azure.')
+@description('Provide a name for the storage account. Use only lower case letters and numbers. The name must be unique across Azure.')
 param searchServicesName string = 'rhailsearch${uniqueString(resourceGroup().id)}'
 
-@description('Azure OpenAI account name')
 param accounts_RHAILAIDev_name string = 'RHAILModel${uniqueString(resourceGroup().id)}'
 
-@description('Azure OpenAI deployment name (this is the model deployment, not the account name)')
-param openAIDeploymentName string = 'gpt4omini${uniqueString(resourceGroup().id)}'
-
-@description('Azure OpenAI deployed model name')
-param openAIModelName string = 'gpt-4o-mini'
-
-@description('Azure OpenAI deployed model version')
-param openAIModelVersion string = '2024-07-18'
-
-// Create storage account and containers
+@description('create storage account and blobs')
 resource storage 'Microsoft.Storage/storageAccounts@2023-05-01' = {
   name: storageAccountName
   location: location
@@ -54,6 +46,8 @@ resource storage 'Microsoft.Storage/storageAccounts@2023-05-01' = {
     }
   }
 }
+
+
 
 resource searchServices 'Microsoft.Search/searchServices@2024-06-01-preview' = {
   name: searchServicesName
@@ -85,7 +79,8 @@ resource searchServices 'Microsoft.Search/searchServices@2024-06-01-preview' = {
   }
 }
 
-resource openAI 'Microsoft.CognitiveServices/accounts@2025-10-01-preview' = {
+
+resource openAI 'Microsoft.CognitiveServices/accounts@2024-04-01-preview' = {
   name: accounts_RHAILAIDev_name
   location: location
   tags: {
@@ -98,36 +93,36 @@ resource openAI 'Microsoft.CognitiveServices/accounts@2025-10-01-preview' = {
   properties: {
     customSubDomainName: accounts_RHAILAIDev_name
     publicNetworkAccess: 'Enabled'
-    disableLocalAuth: false
   }
 }
 
-// NOTE: The 'capacity' value must align with your Azure OpenAI quota.
-// Model availability varies by region and subscription access.
 
-resource openAIDeployment 'Microsoft.CognitiveServices/accounts/deployments@2025-10-01-preview' = {
+
+
+resource accounts_RHAILAIDev_name_rhaildevaimodel 'Microsoft.CognitiveServices/accounts/deployments@2024-04-01-preview' = {
   parent: openAI
-  name: openAIDeploymentName
+  name: accounts_RHAILAIDev_name
   sku: {
     name: 'Standard'
-    capacity: 10
+    capacity: 90 //140
   }
   properties: {
     model: {
       format: 'OpenAI'
-      name: openAIModelName
-      version: openAIModelVersion
+      name: 'gpt-4o'
+      version: '2024-05-13'
     }
     versionUpgradeOption: 'OnceCurrentVersionExpired'
+    currentCapacity: 140
     raiPolicyName: 'Microsoft.Default'
   }
 }
+
+
+
 
 output storageAccountName string = storageAccountName
 output containerNameRec string = containerNameRec
 output containerNameParse string = containerNameParse
 output dataSourceConnectionString string = 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${storage.listKeys().keys[0].value};'
 output searchServicesName string = searchServicesName
-output openAIAccountName string = accounts_RHAILAIDev_name
-output openAIDeploymentName string = openAIDeploymentName
-output openAIModel string = '${openAIModelName}:${openAIModelVersion}'

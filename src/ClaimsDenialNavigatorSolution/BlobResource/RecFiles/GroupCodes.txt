@@ -1,0 +1,23 @@
+Group codes identify the financially responsible party or the general category of payment adjustment. A group code must always be used in conjunction with a CARC.
+
+Group codes are codes that will always be shown with a reason code to indicate when a provider may or may not bill a beneficiary for the non-paid balance of the services furnished.
+
+Payment Adjustment Category Description
+
+• PR (Patient Responsibility).
+
+• CO (Contractual Obligation).
+
+• OA (Other Adjustment).
+
+• CR (Correction or Reversal to a prior decision).
+
+
+
+
+LQ Qualifiers
+HE - Health Care Remark Codes
+RX - Pharmacy
+PR - Patient Responsibility
+CO - Contractual Obligations
+OA - Other Adjustments

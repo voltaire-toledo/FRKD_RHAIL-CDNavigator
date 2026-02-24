@@ -19,9 +19,9 @@ cd FRKD_RHAIL-CDNavigator
 ---
 
 ### ✅ 2. Install Power Platform CLI
-If you don’t have the CLI installed:
+The easiest way is to install the **Power Platform VS Code Extension**. If you prefer the command line:
 ```bash
-npm install -g @microsoft/powerplatform-cli
+dotnet tool install --global Microsoft.PowerApps.CLI.Tool
 ```
 
 Verify installation:
@@ -32,10 +32,10 @@ pac --version
 ---
 
 ### ✅ 3. Pack the Solution
-The unpacked solution files are already in this repo. To create a `.zip` file for import into Power Apps:
+The unpacked solution files are located in the `src/ClaimsDenialNavigatorSolution/` directory. To create a `.zip` file for import into Power Apps, run the following command from the repository root:
 
 ```bash
-pac solution pack --folder ./solution --zipfile ./ClaimsDenialNavigator.zip --packagetype Unmanaged
+pac solution pack --folder ./src/ClaimsDenialNavigatorSolution --zipfile ./src/ClaimsDenialNavigator.zip --packagetype Unmanaged
 ```
 
 **Notes:**
@@ -138,6 +138,3 @@ To ensure a secure and resilient architecture when using services like Azure Ope
   - [Monitor Azure OpenAI](https://urldefense.com/v3/__https://learn.microsoft.com/en-us/azure/ai-foundry/openai/how-to/monitor-openai__;!!Jrgwm_wKFTPpVg!MmYxbo8T9xCsJA4qkZFClTNVk3jRvXvj1h8tjsJOhIdOvAvbsPneCyY9ZgQ3v_tjsW72JbHV4B3lTMPcKL9XSz0$)
   - [Enable Diagnostics settings for OpenAI](https://urldefense.com/v3/__https://learn.microsoft.com/en-us/azure/ai-services/diagnostic-logging__;!!Jrgwm_wKFTPpVg!MmYxbo8T9xCsJA4qkZFClTNVk3jRvXvj1h8tjsJOhIdOvAvbsPneCyY9ZgQ3v_tjsW72JbHV4B3lTMPcjOlAd1M$)
   - [Configure diagnostics logging for Azure AI Search](https://urldefense.com/v3/__https://learn.microsoft.com/en-us/azure/search/search-monitor-enable-logging__;!!Jrgwm_wKFTPpVg!MmYxbo8T9xCsJA4qkZFClTNVk3jRvXvj1h8tjsJOhIdOvAvbsPneCyY9ZgQ3v_tjsW72JbHV4B3lTMPcF1bc11E$)
-
-
-

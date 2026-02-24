@@ -1,0 +1,495 @@
+PS D:\CODE\gh-vt@storied\FORKED-FB-DOCO\azureresources> .\AddResource.ps1
+[2026-02-24-02-32-03] Start creation
+Select the account you want to log in with. For more information on login with Azure CLI, see https://go.microsoft.com/fwlink/?linkid=2271136
+
+Retrieving subscriptions for the selection...
+
+[Tenant and subscription selection]
+
+No     Subscription name    Subscription ID                       Tenant
+-----  -------------------  ------------------------------------  ------------------------------------
+[1]    AppSub               97f06315-af81-43d7-bbf1-c9db17d18fd6  173067a1-3a44-4188-b228-16116e7d918a
+[2] *  Infrastructure       a842fb1b-f221-4b5c-940e-416626031548  173067a1-3a44-4188-b228-16116e7d918a
+
+The default is marked with an *; the default tenant is '173067a1-3a44-4188-b228-16116e7d918a' and subscription is 'Infrastructure' (a842fb1b-f221-4b5c-940e-416626031548).
+
+Select a subscription and tenant (Type a number or Enter for no changes):
+
+Tenant: 173067a1-3a44-4188-b228-16116e7d918a
+Subscription: Infrastructure (a842fb1b-f221-4b5c-940e-416626031548)
+
+[Announcements]
+With the new Azure CLI login experience, you can select the subscription you want to use more easily. Learn more about it and its configuration at https://go.microsoft.com/fwlink/?linkid=2271236
+
+If you encounter any problem, please open an issue at https://aka.ms/azclibug
+
+[Warning] The login output has been updated. Please be aware that it no longer displays the full list of available subscriptions by default.
+
+{
+  "id": "/subscriptions/a842fb1b-f221-4b5c-940e-416626031548/resourceGroups/ClaimCopilot-RG",
+  "location": "eastus2",
+  "managedBy": null,
+  "name": "ClaimCopilot-RG",
+  "properties": {
+    "provisioningState": "Succeeded"
+  },
+  "tags": null,
+  "type": "Microsoft.Resources/resourceGroups"
+}
+{
+  "id": "/subscriptions/a842fb1b-f221-4b5c-940e-416626031548/resourceGroups/ClaimCopilot-RG/providers/Microsoft.Resources/deployments/DeployResources_2026-02-24-02-32-03",
+  "location": null,
+  "name": "DeployResources_2026-02-24-02-32-03",
+  "properties": {
+    "correlationId": "810609c0-5318-4d1f-8b25-c743a22892b8",
+    "debugSetting": null,
+    "dependencies": [
+      {
+        "dependsOn": [
+          {
+            "id": "/subscriptions/a842fb1b-f221-4b5c-940e-416626031548/resourceGroups/ClaimCopilot-RG/providers/Microsoft.Storage/storageAccounts/s2w3fzm2tydrc/blobServices/default",
+            "resourceGroup": "ClaimCopilot-RG",
+            "resourceName": "s2w3fzm2tydrc/default",
+            "resourceType": "Microsoft.Storage/storageAccounts/blobServices"
+          }
+        ],
+        "id": "/subscriptions/a842fb1b-f221-4b5c-940e-416626031548/resourceGroups/ClaimCopilot-RG/providers/Microsoft.Storage/storageAccounts/s2w3fzm2tydrc/blobServices/default/containers/recs",
+        "resourceGroup": "ClaimCopilot-RG",
+        "resourceName": "s2w3fzm2tydrc/default/recs",
+        "resourceType": "Microsoft.Storage/storageAccounts/blobServices/containers"
+      },
+      {
+        "dependsOn": [
+          {
+            "id": "/subscriptions/a842fb1b-f221-4b5c-940e-416626031548/resourceGroups/ClaimCopilot-RG/providers/Microsoft.Storage/storageAccounts/s2w3fzm2tydrc/blobServices/default",
+            "resourceGroup": "ClaimCopilot-RG",
+            "resourceName": "s2w3fzm2tydrc/default",
+            "resourceType": "Microsoft.Storage/storageAccounts/blobServices"
+          }
+        ],
+        "id": "/subscriptions/a842fb1b-f221-4b5c-940e-416626031548/resourceGroups/ClaimCopilot-RG/providers/Microsoft.Storage/storageAccounts/s2w3fzm2tydrc/blobServices/default/containers/parse",
+        "resourceGroup": "ClaimCopilot-RG",
+        "resourceName": "s2w3fzm2tydrc/default/parse",
+        "resourceType": "Microsoft.Storage/storageAccounts/blobServices/containers"
+      },
+      {
+        "dependsOn": [
+          {
+            "id": "/subscriptions/a842fb1b-f221-4b5c-940e-416626031548/resourceGroups/ClaimCopilot-RG/providers/Microsoft.Storage/storageAccounts/s2w3fzm2tydrc",
+            "resourceGroup": "ClaimCopilot-RG",
+            "resourceName": "s2w3fzm2tydrc",
+            "resourceType": "Microsoft.Storage/storageAccounts"
+          }
+        ],
+        "id": "/subscriptions/a842fb1b-f221-4b5c-940e-416626031548/resourceGroups/ClaimCopilot-RG/providers/Microsoft.Storage/storageAccounts/s2w3fzm2tydrc/blobServices/default",
+        "resourceGroup": "ClaimCopilot-RG",
+        "resourceName": "s2w3fzm2tydrc/default",
+        "resourceType": "Microsoft.Storage/storageAccounts/blobServices"
+      },
+      {
+        "dependsOn": [
+          {
+            "id": "/subscriptions/a842fb1b-f221-4b5c-940e-416626031548/resourceGroups/ClaimCopilot-RG/providers/Microsoft.CognitiveServices/accounts/RHAILModeljgkd4p3u4ol7q",
+            "resourceGroup": "ClaimCopilot-RG",
+            "resourceName": "RHAILModeljgkd4p3u4ol7q",
+            "resourceType": "Microsoft.CognitiveServices/accounts"
+          }
+        ],
+        "id": "/subscriptions/a842fb1b-f221-4b5c-940e-416626031548/resourceGroups/ClaimCopilot-RG/providers/Microsoft.CognitiveServices/accounts/RHAILModeljgkd4p3u4ol7q/deployments/gpt4ominijgkd4p3u4ol7q",       
+        "resourceGroup": "ClaimCopilot-RG",
+        "resourceName": "RHAILModeljgkd4p3u4ol7q/gpt4ominijgkd4p3u4ol7q",
+        "resourceType": "Microsoft.CognitiveServices/accounts/deployments"
+      }
+    ],
+    "diagnostics": null,
+    "duration": "PT17M40.7029855S",
+    "error": null,
+    "extensions": [],
+    "mode": "Incremental",
+    "onErrorDeployment": null,
+    "outputResources": [
+      {
+        "apiVersion": null,
+        "extension": null,
+        "id": "/subscriptions/a842fb1b-f221-4b5c-940e-416626031548/resourceGroups/ClaimCopilot-RG/providers/Microsoft.CognitiveServices/accounts/RHAILModeljgkd4p3u4ol7q",
+        "identifiers": null,
+        "resourceGroup": "ClaimCopilot-RG",
+        "resourceType": "Microsoft.CognitiveServices/accounts"
+      },
+      {
+        "apiVersion": null,
+        "extension": null,
+        "id": "/subscriptions/a842fb1b-f221-4b5c-940e-416626031548/resourceGroups/ClaimCopilot-RG/providers/Microsoft.CognitiveServices/accounts/RHAILModeljgkd4p3u4ol7q/deployments/gpt4ominijgkd4p3u4ol7q",       
+        "identifiers": null,
+        "resourceGroup": "ClaimCopilot-RG",
+        "resourceType": "Microsoft.CognitiveServices/accounts/deployments"
+      },
+      {
+        "apiVersion": null,
+        "extension": null,
+        "id": "/subscriptions/a842fb1b-f221-4b5c-940e-416626031548/resourceGroups/ClaimCopilot-RG/providers/Microsoft.Search/searchServices/rhailsearchjgkd4p3u4ol7q",
+        "identifiers": null,
+        "resourceGroup": "ClaimCopilot-RG",
+        "resourceType": "Microsoft.Search/searchServices"
+      },
+      {
+        "apiVersion": null,
+        "extension": null,
+        "id": "/subscriptions/a842fb1b-f221-4b5c-940e-416626031548/resourceGroups/ClaimCopilot-RG/providers/Microsoft.Storage/storageAccounts/s2w3fzm2tydrc",
+        "identifiers": null,
+        "resourceGroup": "ClaimCopilot-RG",
+        "resourceType": "Microsoft.Storage/storageAccounts"
+      },
+      {
+        "apiVersion": null,
+        "extension": null,
+        "id": "/subscriptions/a842fb1b-f221-4b5c-940e-416626031548/resourceGroups/ClaimCopilot-RG/providers/Microsoft.Storage/storageAccounts/s2w3fzm2tydrc/blobServices/default",
+        "identifiers": null,
+        "resourceGroup": "ClaimCopilot-RG",
+        "resourceType": "Microsoft.Storage/storageAccounts/blobServices"
+      },
+      {
+        "apiVersion": null,
+        "extension": null,
+        "id": "/subscriptions/a842fb1b-f221-4b5c-940e-416626031548/resourceGroups/ClaimCopilot-RG/providers/Microsoft.Storage/storageAccounts/s2w3fzm2tydrc/blobServices/default/containers/parse",
+        "identifiers": null,
+        "resourceGroup": "ClaimCopilot-RG",
+        "resourceType": "Microsoft.Storage/storageAccounts/blobServices/containers"
+      },
+      {
+        "apiVersion": null,
+        "extension": null,
+        "id": "/subscriptions/a842fb1b-f221-4b5c-940e-416626031548/resourceGroups/ClaimCopilot-RG/providers/Microsoft.Storage/storageAccounts/s2w3fzm2tydrc/blobServices/default/containers/recs",
+        "identifiers": null,
+        "resourceGroup": "ClaimCopilot-RG",
+        "resourceType": "Microsoft.Storage/storageAccounts/blobServices/containers"
+      }
+    ],
+    "outputs": {
+      "containerNameParse": {
+        "type": "String",
+        "value": "parse"
+      },
+      "containerNameRec": {
+        "type": "String",
+        "value": "recs"
+      },
+      "dataSourceConnectionString": {
+        "type": "String",
+        "value": "DefaultEndpointsProtocol=https;AccountName=s2w3fzm2tydrc;AccountKey=KBokraYehj0KGWq3Vr/ks3UZX1IYajX2hEoTDEeb9ZamQCvM7zyPqQTEUK04MST3/aaX0n0edP3S+AStqz+4hw==;"
+      },
+      "openAIAccountName": {
+        "type": "String",
+        "value": "RHAILModeljgkd4p3u4ol7q"
+      },
+      "openAIDeploymentName": {
+        "type": "String",
+        "value": "gpt4ominijgkd4p3u4ol7q"
+      },
+      "openAIModel": {
+        "type": "String",
+        "value": "gpt-4o-mini:2024-07-18"
+      },
+      "searchServicesName": {
+        "type": "String",
+        "value": "rhailsearchjgkd4p3u4ol7q"
+      },
+      "storageAccountName": {
+        "type": "String",
+        "value": "s2w3fzm2tydrc"
+      }
+    },
+    "parameters": {
+      "accounts_RHAILAIDev_name": {
+        "type": "String",
+        "value": "RHAILModeljgkd4p3u4ol7q"
+      },
+      "containerNameParse": {
+        "type": "String",
+        "value": "parse"
+      },
+      "containerNameRec": {
+        "type": "String",
+        "value": "recs"
+      },
+      "filename": {
+        "type": "String",
+        "value": "SubmittedUserFeedback.txt"
+      },
+      "location": {
+        "type": "String",
+        "value": "eastus2"
+      },
+      "openAIDeploymentName": {
+        "type": "String",
+        "value": "gpt4ominijgkd4p3u4ol7q"
+      },
+      "openAIModelName": {
+        "type": "String",
+        "value": "gpt-4o-mini"
+      },
+      "openAIModelVersion": {
+        "type": "String",
+        "value": "2024-07-18"
+      },
+      "searchServicesName": {
+        "type": "String",
+        "value": "rhailsearchjgkd4p3u4ol7q"
+      },
+      "storageAccountName": {
+        "type": "String",
+        "value": "s2w3fzm2tydrc"
+      },
+      "utcValue": {
+        "type": "String",
+        "value": "20260224T073224Z"
+      }
+    },
+    "parametersLink": null,
+    "providers": [
+      {
+        "id": null,
+        "namespace": "Microsoft.Storage",
+        "providerAuthorizationConsentState": null,
+        "registrationPolicy": null,
+        "registrationState": null,
+        "resourceTypes": [
+          {
+            "aliases": null,
+            "apiProfiles": null,
+            "apiVersions": null,
+            "capabilities": null,
+            "defaultApiVersion": null,
+            "locationMappings": null,
+            "locations": [
+              null
+            ],
+            "properties": null,
+            "resourceType": "storageAccounts/blobServices/containers",
+            "zoneMappings": null
+          },
+          {
+            "aliases": null,
+            "apiProfiles": null,
+            "apiVersions": null,
+            "capabilities": null,
+            "defaultApiVersion": null,
+            "locationMappings": null,
+            "locations": [
+              null
+            ],
+            "properties": null,
+            "resourceType": "storageAccounts/blobServices",
+            "zoneMappings": null
+          },
+          {
+            "aliases": null,
+            "apiProfiles": null,
+            "apiVersions": null,
+            "capabilities": null,
+            "defaultApiVersion": null,
+            "locationMappings": null,
+            "locations": [
+              "eastus2"
+            ],
+            "properties": null,
+            "resourceType": "storageAccounts",
+            "zoneMappings": null
+          }
+        ]
+      },
+      {
+        "id": null,
+        "namespace": "Microsoft.Search",
+        "providerAuthorizationConsentState": null,
+        "registrationPolicy": null,
+        "registrationState": null,
+        "resourceTypes": [
+          {
+            "aliases": null,
+            "apiProfiles": null,
+            "apiVersions": null,
+            "capabilities": null,
+            "defaultApiVersion": null,
+            "locationMappings": null,
+            "locations": [
+              "eastus2"
+            ],
+            "properties": null,
+            "resourceType": "searchServices",
+            "zoneMappings": null
+          }
+        ]
+      },
+      {
+        "id": null,
+        "namespace": "Microsoft.CognitiveServices",
+        "providerAuthorizationConsentState": null,
+        "registrationPolicy": null,
+        "registrationState": null,
+        "resourceTypes": [
+          {
+            "aliases": null,
+            "apiProfiles": null,
+            "apiVersions": null,
+            "capabilities": null,
+            "defaultApiVersion": null,
+            "locationMappings": null,
+            "locations": [
+              "eastus2"
+            ],
+            "properties": null,
+            "resourceType": "accounts",
+            "zoneMappings": null
+          },
+          {
+            "aliases": null,
+            "apiProfiles": null,
+            "apiVersions": null,
+            "capabilities": null,
+            "defaultApiVersion": null,
+            "locationMappings": null,
+            "locations": [
+              null
+            ],
+            "properties": null,
+            "resourceType": "accounts/deployments",
+            "zoneMappings": null
+          }
+        ]
+      }
+    ],
+    "provisioningState": "Succeeded",
+    "templateHash": "18049663915743698139",
+    "templateLink": null,
+    "timestamp": "2026-02-24T07:50:05.338655+00:00",
+    "validatedResources": null,
+    "validationLevel": null
+  },
+  "resourceGroup": "ClaimCopilot-RG",
+  "tags": null,
+  "type": "Microsoft.Resources/deployments"
+}
+Resources created !
+Retrieving deployment outputs...
+Search Service: rhailsearchjgkd4p3u4ol7q
+Storage Account: s2w3fzm2tydrc
+                                                                                                                        
+StatusCode        : 201
+StatusDescription : Created
+Content           : {"@odata.context":"https://rhailsearchjgkd4p3u4ol7q.search.windows.net/$metadata#indexes/$entity","@odata.etag":"\"0x8DE73796668CAE1\"","name":"parse-autocreate","defaultScoringProfile":"","f 
+                    ields":[{…
+RawContent        : HTTP/1.1 201 Created
+                    Transfer-Encoding: chunked
+                    ETag: "0x8DE73796668CAE1"
+                    Location: https://rhailsearchjgkd4p3u4ol7q.search.windows.net/indexes('parse-autocreate')?api-version=2024-07-01
+                    Strict-Tr…
+Headers           : {[Transfer-Encoding, System.String[]], [ETag, System.String[]], [Location, System.String[]], [Strict-Transport-Security, System.String[]]…}
+Images            : {}
+InputFields       : {}
+Links             : {}
+RawContentLength  : 5865
+RelationLink      : {}
+
+StatusCode        : 201                                                                                                 
+StatusDescription : Created
+Content           : {"@odata.context":"https://rhailsearchjgkd4p3u4ol7q.search.windows.net/$metadata#indexes/$entity","@odata.etag":"\"0x8DE737967E29E56\"","name":"filerecs-autocreate","defaultScoringProfile":"" 
+                    ,"fields"…
+RawContent        : HTTP/1.1 201 Created
+                    Transfer-Encoding: chunked
+                    ETag: "0x8DE737967E29E56"
+                    Location: https://rhailsearchjgkd4p3u4ol7q.search.windows.net/indexes('filerecs-autocreate')?api-version=2024-07-01
+                    Strict…
+Headers           : {[Transfer-Encoding, System.String[]], [ETag, System.String[]], [Location, System.String[]], [Strict-Transport-Security, System.String[]]…}
+Images            : {}
+InputFields       : {}
+Links             : {}
+RawContentLength  : 5867
+RelationLink      : {}
+
+StatusCode        : 201                                                                                                 
+StatusDescription : Created
+Content           : {"@odata.context":"https://rhailsearchjgkd4p3u4ol7q.search.windows.net/$metadata#datasources/$entity","@odata.etag":"\"0x8DE7379681F62F2\"","name":"s2w3fzm2tydrcparse","description":null,"typ 
+                    e":"azure…
+RawContent        : HTTP/1.1 201 Created
+                    Transfer-Encoding: chunked
+                    ETag: "0x8DE7379681F62F2"
+                    Location: https://rhailsearchjgkd4p3u4ol7q.search.windows.net/datasources('s2w3fzm2tydrcparse')?api-version=2024-07-01
+                    Str…
+Headers           : {[Transfer-Encoding, System.String[]], [ETag, System.String[]], [Location, System.String[]], [Strict-Transport-Security, System.String[]]…}
+Images            : {}
+InputFields       : {}
+Links             : {}
+RawContentLength  : 392
+RelationLink      : {}
+
+StatusCode        : 201                                                                                                 
+StatusDescription : Created
+Content           : {"@odata.context":"https://rhailsearchjgkd4p3u4ol7q.search.windows.net/$metadata#datasources/$entity","@odata.etag":"\"0x8DE7379684977F1\"","name":"s2w3fzm2tydrcrecs","description":null,"type 
+                    ":"azureb…
+RawContent        : HTTP/1.1 201 Created
+                    Transfer-Encoding: chunked
+                    ETag: "0x8DE7379684977F1"
+                    Location: https://rhailsearchjgkd4p3u4ol7q.search.windows.net/datasources('s2w3fzm2tydrcrecs')?api-version=2024-07-01
+                    Stri…
+Headers           : {[Transfer-Encoding, System.String[]], [ETag, System.String[]], [Location, System.String[]], [Strict-Transport-Security, System.String[]]…}
+Images            : {}
+InputFields       : {}
+Links             : {}
+RawContentLength  : 390
+RelationLink      : {}
+
+StatusCode        : 201
+StatusDescription : Created
+Content           : {"@odata.context":"https://rhailsearchjgkd4p3u4ol7q.search.windows.net/$metadata#indexers/$entity","@odata.etag":"\"0x8DE737969135EE1\"","name":"indexerrec-autocreate","description":null,"dat 
+                    aSourceNa…
+RawContent        : HTTP/1.1 201 Created
+                    Transfer-Encoding: chunked
+                    ETag: "0x8DE737969135EE1"
+                    Location: https://rhailsearchjgkd4p3u4ol7q.search.windows.net/indexers('indexerrec-autocreate')?api-version=2024-07-01
+                    Str…
+Headers           : {[Transfer-Encoding, System.String[]], [ETag, System.String[]], [Location, System.String[]], [Strict-Transport-Security, System.String[]]…}
+Images            : {}
+InputFields       : {}
+Links             : {}
+RawContentLength  : 764
+RelationLink      : {}
+InputFields       : {}
+Links             : {}
+RawContentLength  : 764
+InputFields       : {}
+Links             : {}
+InputFields       : {}
+InputFields       : {}
+Links             : {}
+RawContentLength  : 764
+RelationLink      : {}
+InputFields       : {}
+Links             : {}
+RawContentLength  : 764
+InputFields       : {}
+Links             : {}
+RawContentLength  : 764
+InputFields       : {}
+Links             : {}
+RawContentLength  : 764
+InputFields       : {}
+Links             : {}
+RawContentLength  : 764
+RelationLink      : {}
+StatusDescription : Created
+Content           : {"@odata.context":"https://rhailsearchjgkd4p3u4ol7q.search.windows.net/$metadata#indexers/$entity","@odata.etag":"\"0x8DE7379695133BE\"","name":"indexerparse-autocreate","description":null,"d  
+                    ataSource…
+RawContent        : HTTP/1.1 201 Created
+                    Transfer-Encoding: chunked
+                    ETag: "0x8DE7379695133BE"
+                    Location: https://rhailsearchjgkd4p3u4ol7q.search.windows.net/indexers('indexerparse-autocreate')?api-version=2024-07-01
+                    S…
+Headers           : {[Transfer-Encoding, System.String[]], [ETag, System.String[]], [Location, System.String[]], [Strict-Transport-Security, System.String[]]…}
+Images            : {}
+InputFields       : {}
+Links             : {}
+RawContentLength  : 764
+RelationLink      : {}
+
+Indexes created! Script complete
