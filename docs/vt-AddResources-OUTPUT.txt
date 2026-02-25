@@ -176,7 +176,7 @@ If you encounter any problem, please open an issue at https://aka.ms/azclibug
       },
       "dataSourceConnectionString": {
         "type": "String",
-        "value": "DefaultEndpointsProtocol=https;AccountName=s2w3fzm2tydrc;AccountKey=KBokraYehj0KGWq3Vr/ks3UZX1IYajX2hEoTDEeb9ZamQCvM7zyPqQTEUK04MST3/aaX0n0edP3S+AStqz+4hw==;"
+        "value": "DefaultEndpointsProtocol=https;AccountName=***REDACTED***;AccountKey=***REDACTED***;"
       },
       "openAIAccountName": {
         "type": "String",

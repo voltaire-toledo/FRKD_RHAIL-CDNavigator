@@ -1,14 +1,21 @@
 ## This script adds indexers via API calls to complete the AI index set up process 
 ## hard coded for recs and parse containers based on previous bicep file.
 
+# Load environment variables from .env file
+if (Test-Path "$PSScriptRoot/../../../.env") {
+    Get-Content "$PSScriptRoot/../../../.env" | ForEach-Object {
+        if ($_ -match '^([^=]+)=(.*)$') {
+            [Environment]::SetEnvironmentVariable($matches[1], $matches[2], 'Process')
+        }
+    }
+}
 
-$searchServiceName = 'rhailsearchsscsk5zcsgcns'
-#from endpoint remove endpoint suffix
-$dataSourceConnectionString ='DefaultEndpointsProtocol=https;AccountName=7nlo4fzsdopoc;AccountKey=WB91oHNiZ9027+BJUl4UOzB4PNJwWWzT2ojeIE7vhgyiso83LcqXS6gBwCUw3t+aa5BtdVIFwaJw+ASttTla6Q==;'
-$storageAccountName = '7nlo4fzsdopoc'
-$containerNameRec = 'recs'
-$containerNameParse = 'parse'
-$rgName = 'RHAILAutocreate-Test-2025'
+$searchServiceName = $env:AZURE_SEARCH_SERVICE_NAME
+$dataSourceConnectionString = $env:AZURE_STORAGE_CONNECTION_STRING
+$storageAccountName = $env:AZURE_STORAGE_ACCOUNT_NAME
+$containerNameRec = $env:CONTAINER_NAME_REC
+$containerNameParse = $env:CONTAINER_NAME_PARSE
+$rgName = $env:RESOURCE_GROUP_NAME
 
 
 #uncomment these if needed. the modules below are needed to run script successfuly

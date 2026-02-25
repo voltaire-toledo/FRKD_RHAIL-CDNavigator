@@ -2,9 +2,11 @@
   "name": "manualdatasourcerecs",
   "type": "azureblob",
   "credentials": {
-    "connectionString": "DefaultEndpointsProtocol=https;AccountName=7nlo4fzsdopoc;AccountKey=WB91oHNiZ9027+BJUl4UOzB4PNJwWWzT2ojeIE7vhgyiso83LcqXS6gBwCUw3t+aa5BtdVIFwaJw+ASttTla6Q==;"
+    "connectionString": "<REPLACE_WITH_CONNECTION_STRING_FROM_ENV>"
   },
   "container": {
     "name": "recs"
   }
 }
+
+Note: Replace <REPLACE_WITH_CONNECTION_STRING_FROM_ENV> with the value from AZURE_STORAGE_CONNECTION_STRING environment variable.

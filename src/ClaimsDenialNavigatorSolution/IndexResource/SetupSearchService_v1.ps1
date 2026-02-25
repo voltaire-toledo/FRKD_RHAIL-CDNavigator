@@ -10,12 +10,13 @@ param(
     [string] [Parameter(Mandatory=$true)] $rgName
 )
 
-<#$searchServiceName = 'rhailsearchwkooufxnycfr2'
-$dataSourceConnectionString ='DefaultEndpointsProtocol=https;AccountName=gai5xkqe3o63g;AccountKey=ibRcBWt2BUDxKbNKc210pBJoARttjLlbeo2KSExZCOmC2RPACZRA+3tBvxBm3PAw3FvL6y5uA9rq+AStUbaRrA==;'
-$storageAccountName = 'gai5xkqe3o63g'
-$containerNameRec = 'recs'
-$containerNameParse = 'parse'
-$rgName = 'RHAILTestAutocreate-Aug22'#>
+# Example configuration (use environment variables or parameters instead):
+# $searchServiceName = $env:AZURE_SEARCH_SERVICE_NAME
+# $dataSourceConnectionString = $env:AZURE_STORAGE_CONNECTION_STRING
+# $storageAccountName = $env:AZURE_STORAGE_ACCOUNT_NAME
+# $containerNameRec = $env:CONTAINER_NAME_REC
+# $containerNameParse = $env:CONTAINER_NAME_PARSE
+# $rgName = $env:RESOURCE_GROUP_NAME
 
 
 #uncomment these if needed. the modules below are needed to run script successfuly
