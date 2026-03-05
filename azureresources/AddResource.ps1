@@ -38,59 +38,80 @@
     Date: 2025-03-06
 #>
 
-
-$TENANT_ID          = "173067a1-3a44-4188-b228-16116e7d918a"
-$APP_SUBSCRIPTION   = "97f06315-af81-43d7-bbf1-c9db17d18fd6"
-$INFRA_SUBSCRIPTION = "a842fb1b-f221-4b5c-940e-416626031548"
-
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 
-New-Variable -name tenant -Value $TENANT_ID -Description "Tenant ID for Azure login" -Force
-New-Variable -Name sub -Value $INFRA_SUBSCRIPTION -Description "ID of the Azure Sponsorship Sub" -Force
-New-Variable -Name newRG -Value "ClaimCopilot-RG" -Description "Name of the new resource group. All resources will be here" -Force
-New-Variable -name loc -Value "East US 2" -Description "The location you want your resources created in. Select region closest to you" -Force
+# Pull variables from ../.env.ps1
+. "$PSScriptRoot/../.env.ps1" 
+
+New-Variable -name tenant -Value $env:TENANT_ID -Description "Tenant ID for Azure login" -Force
+New-Variable -Name sub -Value $env:TARGET_SUBSCRIPTION -Description "ID of the Azure Sponsorship Sub" -Force
+New-Variable -Name newRG -Value $env:AZURE_RESOURCE_GROUP_NAME -Description "Name of the new resource group. All resources will be here" -Force
+New-Variable -name loc -Value $env:AZURE_LOCATION -Description "The location you want your resources created in. Select region closest to you" -Force
 New-Variable -name bicepFile -Value ./main.bicep -Description "Filepath to the bicep file" -Force
 $timestamp = Get-Date -Format "yyyy-MM-dd-HH-mm-ss"
 Write-Output "[$timestamp] Start creation"
 
 
 #check if successfully installed
-az login --tenant $tenant
-#add sub
+az login --tenant $tenant --allow-no-subscriptions
 az account set --subscription $sub
+az config set core.enable_broker_on_windows=false     
+
 #create new resource group if it doesn't exist
 az group create --name $newRG --location $loc 2>$null
 #deploy the resources
-try{
-    az deployment group create --resource-group $newRG --template-file $bicepFile --name DeployResources_$timestamp --only-show-errors
+try {
+  az deployment group create --resource-group $newRG --template-file $bicepFile --name DeployResources_$timestamp --only-show-errors
     
-    if ($LASTEXITCODE -ne 0) {
-        throw "Deployment failed with exit code $LASTEXITCODE"
-    }
+  if ($LASTEXITCODE -ne 0) {
+    throw "Deployment failed with exit code $LASTEXITCODE"
+  }
     
-    Write-Host "Resources created !" -ForegroundColor Green
+  Write-Host "Resources created !" -ForegroundColor Green
     
-    #get outputs from deployment to create indexes
-    Write-Host "Retrieving deployment outputs..." -ForegroundColor Cyan
-    $searchServiceName = az deployment group show -g $newRG -n DeployResources_$timestamp --query properties.outputs.searchServicesName.value -o tsv
-    $connString = az deployment group show -g $newRG -n DeployResources_$timestamp --query properties.outputs.dataSourceConnectionString.value -o tsv
-    $storageAccount =  az deployment group show -g $newRG -n DeployResources_$timestamp --query properties.outputs.storageAccountName.value -o tsv
-    $containerRec = az deployment group show -g $newRG -n DeployResources_$timestamp --query properties.outputs.containerNameRec.value -o tsv
-    $containerParse = az deployment group show -g $newRG -n DeployResources_$timestamp --query properties.outputs.containerNameParse.value -o tsv
+  #get outputs from deployment to create indexes
+  Write-Host "Retrieving deployment outputs..." -ForegroundColor Cyan
+  $searchServiceName = az deployment group show -g $newRG -n DeployResources_$timestamp --query properties.outputs.searchServicesName.value -o tsv
+  $connString = az deployment group show -g $newRG -n DeployResources_$timestamp --query properties.outputs.dataSourceConnectionString.value -o tsv
+  $storageAccount = az deployment group show -g $newRG -n DeployResources_$timestamp --query properties.outputs.storageAccountName.value -o tsv
+  $containerRec = az deployment group show -g $newRG -n DeployResources_$timestamp --query properties.outputs.containerNameRec.value -o tsv
+  $containerParse = az deployment group show -g $newRG -n DeployResources_$timestamp --query properties.outputs.containerNameParse.value -o tsv
     
-    Write-Host "Search Service: $searchServiceName" -ForegroundColor Yellow
-    Write-Host "Storage Account: $storageAccount" -ForegroundColor Yellow
+  Write-Host "Search Service: $searchServiceName" -ForegroundColor Yellow
+  Write-Host "Storage Account: $storageAccount" -ForegroundColor Yellow
     
-    if ([string]::IsNullOrWhiteSpace($searchServiceName)) {
-        throw "Failed to retrieve searchServiceName from deployment outputs"
-    }
+  if ([string]::IsNullOrWhiteSpace($searchServiceName)) {
+    throw "Failed to retrieve searchServiceName from deployment outputs"
+  }
 
-    .\IndexResource\SetupSearchService_v1.ps1 -searchServiceName $searchServiceName -dataSourceConnectionString $connString -storageAccountName $storageAccount -containerNameRec $containerRec -containerNameParse $containerParse -rgName $newRG
+  .\IndexResource\SetupSearchService_v1.ps1 -searchServiceName $searchServiceName -dataSourceConnectionString $connString -storageAccountName $storageAccount -containerNameRec $containerRec -containerNameParse $containerParse -rgName $newRG
+    
+  # Fetch all deployment outputs in one call
+  $outputs = az deployment group show -g $newRG -n DeployResources_$timestamp --query properties.outputs -o json | ConvertFrom-Json
 
-    Write-Host "Indexes created! Script complete" -BackgroundColor Green
+  # Build markdown table
+  $md = @"
+## Deployment Outputs — $timestamp
+
+| Setting | Value |
+|---------|:------|
+"@
+
+  foreach ($key in $outputs.PSObject.Properties.Name) {
+    $value = $outputs.$key.value
+    $md += "`n| $key | ``$value`` |"
+  }
+
+  # Write to file and print
+  $outFile = "$PSScriptRoot/AzResources-$timestamp.md"
+  $md | Out-File -FilePath $outFile -Encoding utf8
+  Write-Host $md
+  Write-Host "`nOutputs saved to: $outFile" -BackgroundColor Green
+    
+  Write-Host "Indexes created! Script complete" -BackgroundColor Green
 }
-catch{
-    Write-Host "Deployment failed!" -ForegroundColor Red
-    Write-Error $_.Exception.Message
-    throw
+catch {
+  Write-Host "Deployment failed!" -ForegroundColor Red
+  Write-Error $_.Exception.Message
+  throw
 }

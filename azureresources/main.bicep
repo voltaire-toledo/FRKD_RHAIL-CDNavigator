@@ -123,11 +123,29 @@ resource openAIDeployment 'Microsoft.CognitiveServices/accounts/deployments@2025
   }
 }
 
+// Storage Account Outputs
 output storageAccountName string = storageAccountName
+output storageAccountPrimaryKey string = storage.listKeys().keys[0].value
+output storageAccountPrimaryEndpoint string = storage.properties.primaryEndpoints.blob
+output dataSourceConnectionString string = 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${storage.listKeys().keys[0].value};'
 output containerNameRec string = containerNameRec
 output containerNameParse string = containerNameParse
-output dataSourceConnectionString string = 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${storage.listKeys().keys[0].value};'
+
+// Azure Search Outputs
 output searchServicesName string = searchServicesName
+output searchServiceEndpoint string = 'https://${searchServicesName}.search.windows.net'
+output searchServicePrimaryKey string = searchServices.listAdminKeys().primaryKey
+output searchServiceQueryKey string = searchServices.listQueryKeys().value[0].key
+
+// Azure OpenAI Outputs
 output openAIAccountName string = accounts_RHAILAIDev_name
+output openAIEndpoint string = openAI.properties.endpoint
+output openAIAPIKey string = openAI.listKeys().key1
 output openAIDeploymentName string = openAIDeploymentName
+output openAIModelName string = openAIModelName
+output openAIModelVersion string = openAIModelVersion
 output openAIModel string = '${openAIModelName}:${openAIModelVersion}'
+
+// General Outputs
+output location string = location
+output resourceGroupName string = resourceGroup().name

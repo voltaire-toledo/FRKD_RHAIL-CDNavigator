@@ -10,6 +10,7 @@
 *.userosscache
 *.sln.docstates
 *.env
+AzResources*.md
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
@@ -416,3 +417,11 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# Power Platform Solution Exports
+solution_1.15.0.22/
+solution_1.15.0.33/
+
+# Power Platform Solution Exports
+solution_1.15.0.22/
+solution_1.15.0.33/

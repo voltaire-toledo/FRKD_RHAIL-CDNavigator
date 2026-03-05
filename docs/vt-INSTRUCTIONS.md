@@ -648,6 +648,54 @@ If all checks pass, your deployment is complete! 🎉
 4. Publish changes
 5. Restart the app
 
+### Issue 8: Cannot Find Cloud Flows
+
+**Symptom**: You cannot see the flows listed in the "My flows" section or cannot find them after import.
+
+**Solution**:
+1. Solution flows do not appear in the standard "My flows" list immediately.
+2. Navigate to **Solutions** on the left sidebar.
+3. Click on the **Denial Navigator** (or imported solution) name.
+4. In the solution explorer, click **Cloud flows** in the left navigation tree or filter the object list by **Cloud flow**.
+5. If the solution is empty, the import may have failed. Check **Solution History** for errors.
+
+### Issue 9: Dashboard List is Slow to Load
+
+**Symptom**: When trying to configure the dashboard (Step 6), the list of dashboards takes a long time to load.
+
+**Cause**: The Power Apps maker portal loads metadata for all solution components before rendering the list.
+
+**Solution**:
+1. Instead of clicking "Dashboards" in the tree, stay on the **All** objects view.
+2. Click the **Filter** icon (funnel) at the top right of the list.
+3. Select **Type** > **Dashboard**. This filtered view loads significantly faster.
+
+### Issue 10: Warning - Link between Flow and App is Broken
+
+**Symptom**: You see a warning: "The link between your flow and app is broken... Please associate these apps with this flow."
+
+**Solution**:
+1. This is a licensing warning, not a functional error. It means Power Automate wants to confirm the flow is part of a Premium App context.
+2. Navigate to **Solutions** > **[Your Solution]** > **Cloud flows**.
+3. Click on the flow name (e.g., `DenialNavigator_MainProcessFlow`) to open the details page.
+4. Locate the **Associated Apps** section (bottom right).
+5. Click **Edit**, select **Denial Navigator**, and click **Save**.
+6. Alternatively, opening the flow in **Edit** mode and clicking **Save** often clears the warning.
+
+### Issue 11: Flow Fails at "Get File Content" Step
+
+**Symptom**: The flow triggers but fails immediately at the "Get file content" action.
+
+**Solution**:
+1. **Check Connection**: Similar to the trigger, the "Get file content" action inside the flow may have lost its reference to the SharePoint site.
+   - Edit `DenialNavigator_MainProcessFlow`.
+   - Locate the **Get file content** action.
+   - Verify the **Site Address** is correct. If it uses an Environment Variable, try manually selecting the site from the dropdown to force a connection refresh.
+   - Ensure **File Identifier** is mapped to the trigger's `Identifier`.
+2. **File Type**: This solution is designed specifically for **.txt** files containing EDI 835 or 837 data.
+   - **PDF/XLS/DOCX**: These binary formats will cause failures in the "Content Conversion" or "Parse" steps.
+   - **JSON**: While text-based, the parser expects EDI format, not JSON.
+
 ### General Debugging Tips
 - **Enable diagnostics logging** on Azure resources (OpenAI, Search, Storage)
 - **Check cloud flow run history** for detailed error messages

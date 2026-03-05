@@ -13,6 +13,7 @@ Denial Navigator is an AI-powered tool designed to help rural hospitals resolve 
     - `vt-AUTHX-Z.md`: Security and authentication.
     - `vt-CODE_DIFFERENCES.md`: Explains repo structure vs release artifacts.
 - **`solution/`**: Legacy folder, contains only a README.
+- **`Convert-Receipts.ps1`**: Utility script to convert PDFs to PNGs for agentic processing.
 
 ## Key Workflows
 

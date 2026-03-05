@@ -21,6 +21,7 @@ This document consolidates all installation steps for the Claims Denial Navigato
     - [Required Library Columns](#required-library-columns)
     - [Record Your SharePoint Details](#record-your-sharepoint-details)
   - [Step 3 — Pack the Power Apps Solution](#step-3--pack-the-power-apps-solution)
+    - [3.0 Source vs. Bundle Distinction](#30-source-vs-bundle-distinction)
     - [3.1 Clone the Repository](#31-clone-the-repository)
     - [3.2 Install Power Platform CLI](#32-install-power-platform-cli)
     - [3.3 Pack the Solution](#33-pack-the-solution)
@@ -34,6 +35,7 @@ This document consolidates all installation steps for the Claims Denial Navigato
     - [Power Apps Import Fails](#power-apps-import-fails)
     - [Search Indexes Not Populating](#search-indexes-not-populating)
     - [App Shows Blank SharePoint iFrame](#app-shows-blank-sharepoint-iframe)
+    - [Dashboard List in Step 5 Is Very Slow to Load](#dashboard-list-in-step-5-is-very-slow-to-load)
 
 ---
 
@@ -106,11 +108,13 @@ Open `azureresources/AddResource.ps1` in a text editor and update the following 
 
 Open a PowerShell window in the `azureresources/` folder and run:
 
-```powershell
+```bash
+cd .\azureresources
 .\AddResource.ps1
 ```
 
 The script will:
+
 1. Log you in to Azure (a browser window will open for authentication).
 2. Set your subscription as the default.
 3. Create the new resource group.
@@ -170,7 +174,7 @@ After creating the library, note:
 
 | Value | Example |
 |---|---|
-| **SharePoint Site URL** | `https://proventuras.sharepoint.com/` |
+| **SharePoint Site URL** | `https://mytenant.sharepoint.com/sites/PatientFinancialServcies` |
 | **Library Name** | `RHAILClaimFiles` |
 
 ---
@@ -211,10 +215,14 @@ pac tool list
 Open a terminal in the repository root and run the following command. This uses the Power Platform CLI to aggregate the source files into a single unmanaged solution file.
 
 ```bash
-pac solution pack --folder ./src/ClaimsDenialNavigatorSolution --zipfile ./src/ClaimsDenialNavigator.zip --packagetype Unmanaged
+cd ..
+pac solution pack --folder .\solution\ --zipfile .\solution\CDN-MainBranch.zip --packagetype Unmanaged
 ```
 
 **Expected output**: A file named `ClaimsDenialNavigator.zip` is created in the repository root.
+
+!!! Note:
+    If you want to try the older version, use the `./src/ClaimsDenialNavigatorSoltuion/RHAIL_1_15_0_22.zip`
 
 > **Options**:
 > - `--packagetype Unmanaged` — use for development environments where you want to edit the solution after import.
@@ -227,36 +235,41 @@ pac solution pack --folder ./src/ClaimsDenialNavigatorSolution --zipfile ./src/C
 1. Open [https://make.powerapps.com](https://make.powerapps.com) in a browser.
 2. Sign in with an account that has **System Administrator** or **System Customizer** role in the target environment.
 3. In the left-hand menu, select **Solutions**.
-4. Select **Import solution** > **Browse**, then select `ClaimsDenialNavigator.zip`.
+4. Select **Import solution** > **Browse**, then select `RHAIL_1_15_0_22.zip`.
 
    ![Upload Solution](../assets/appuploadsolution.png)
 
-5. Click **Next**. On the **Connections** step, create or select a connection for each of the five required connections. All must show a green check mark before proceeding:
-   - Azure Blob Storage DenialNavigator Conn
-   - Content Conversion
-   - Microsoft Dataverse
-   - SharePoint
-   - _(fifth connection as prompted)_
+5. Click **Next**. On the **Connections** step, create or select a connection for each of the five required connections. The goal is to have all connections show a green checkmark before proceeding to the next step. You may need to create new connections if you do not have existing ones with the correct permissions.
+   
+    i. For the **Azure Blob Storage** connection, you will need the storage account name and key from the Azure portal. When creating the connection, select "Connect using on-premises data gateway" and provide the storage account name as the gateway URL and the storage account key as the authentication key.
+    ![Create BlobStorage Connection](../assets/img-sol-connections-blob.png)
+    ![Azure BlobStorage Configuartion](../assets/img-sol-connections-blob-config.png)
+    ![Zero Green](../assets/img-sol-connections-zerogreen.png)
 
-   ![Connections](../assets/appconnections.png)
-
+  
 6. On the **Environment Variables** step, fill in the values collected in [Step 1.4](#14-collect-values-for-later) and [Step 2](#step-2--create-the-sharepoint-document-library):
 
-   | Variable | Value |
-   |---|---|
-   | Azure Blob Storage Name | Storage account name from Step 1.4 |
-   | Azure Search Service API Key | API key from Step 1.4 |
-   | Azure Search Service URL | Search URL from Step 1.4 |
-   | AzureOpenAi API Key | OpenAI key from Step 1.4 |
-   | AzureOpenAi API URL | OpenAI URL from Step 1.4 |
-   | Parse Index | `parse-autocreate` |
-   | Recs Index | `filerecs-autocreate` |
+   | Environment Variable | Maps to table in AzResources-###.md  |
+   |---|:---|
+   | Azure Search Index URL | `searchServiceEndpoint` |
+   | Azure Search Index API Key | `searchServiceQueryKey` |
+   | Azure Open AI API URL | `openAIEndpoint` |
+   | Azure Open AI API Key | `openAIAPIKey` |
+   | Azure Storage Account Name | `storageAccountName` |
    | Sharepoint Doc Site | SharePoint site URL from Step 2 |
    | Sharepoint Library Name | Library name from Step 2 |
+   | File Recommendation Index | `filerecs-autocreate` |
+   | File Parsing Index | `parse-autocreate` |
 
    ![Environment Variables](../assets/appenvvariable.png)
 
 7. Select **Import** and wait for the process to complete.
+
+!!! Note:
+    This can take several minutes to complete. There is no progress bar, but you can monitor the status in the Power Apps portal. If you see any errors during import, review the error messages carefully as they often indicate missing connections or environment variables.
+
+If the following occurs, it means the solution was imported successfully but the connections were not configured correctly. You can determine which connection may be fix this by going to **Data > Connections** in the Power Apps portal and creating new connections with the correct credentials, then re-importing the solution.
+![PowerApp Warning](../assets/non-critical-warning-powerapps.png)
 
 ---
 
@@ -264,7 +277,7 @@ pac solution pack --folder ./src/ClaimsDenialNavigatorSolution --zipfile ./src/C
 
 After import, you must update the SharePoint iFrame embedded in the app dashboard to point to your library.
 
-1. In Power Apps, navigate to your solution and select **Dashboards > Claim Navigator**.
+1. In Power Apps, navigate to your solution and select **Dashboards > Claim Navigator for 835 File**.
 
    ![Dashboard](../assets/appdash.png)
 
@@ -291,16 +304,26 @@ CARC and RARC code definitions must be loaded into Dataverse to enable the app t
 3. Select **Import** > **Import Data**, then select the CSV file.
 
    ![Import Step 1](../assets/uploadcodes_1.png)
+   ![alt text](image.png)
+
+   !!! Warning
+         Do NOT select "Allow duplicates" as this will cause issues with lookups in the app. The import process does not enforce uniqueness, so if you accidentally import duplicates, you will need to manually delete the duplicate records from the `rhail_CodeDefinition` table in Dataverse.
+
 
 4. Click through until you reach **Destination settings**. Confirm the target table is `rhail_CodeDefinition`.
 
+    !!! Danger
+        This is an invalid screenshot
+
    ![Import Step 2](../assets/uploadcodes_2.png)
 
-5. Confirm column mappings match the table schema shown.
+
+
+1. Confirm column mappings match the table schema shown.
 
    ![Import Step 3](../assets/uploadcodes_3.png)
 
-6. Submit and confirm the data loads successfully.
+2. Submit and confirm the data loads successfully.
 
 ---
 
@@ -348,6 +371,14 @@ The default `max_tokens` setting in the Parse 835 child flow may be too low. Edi
 ### App Shows Blank SharePoint iFrame
 
 The iFrame URL was not updated post-import. Return to [Step 5](#step-5--configure-the-app) and update the URL to your SharePoint document library.
+
+### Dashboard List in Step 5 Is Very Slow to Load
+
+The modern maker portal loads all solution component metadata before rendering the dashboard list, which can take several minutes. Use one of these faster alternatives:
+
+- **Filter by type**: In your solution's object list, use the **Type** filter and select **Dashboard**. The filtered view loads significantly faster.
+- **Use the classic interface**: Navigate to `https://<your-org>.crm.dynamics.com/main.aspx`, then go to **Settings** > **Customizations** > **Customize the System** and expand **Dashboards** in the left tree.
+- **Direct URL**: While in your solution in [make.powerapps.com](https://make.powerapps.com), note the environment and solution IDs from the browser address bar and navigate directly to `https://make.powerapps.com/environments/<env-id>/solutions/<solution-id>/dashboards`.
 
 ---
 
