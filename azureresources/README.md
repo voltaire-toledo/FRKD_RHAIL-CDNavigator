@@ -21,20 +21,24 @@ The script performs the following steps:
 
 When the script is run successfully you will see the following resources in a new Resource Group.
 -	Storage Account
--	Deployment Script
 -	Azure Open AI Model
 -	Search Service
 
-In addition to the resources created, the storage account and search service will have additional items created.
-Storage Account
--	A storage container labeled ‘parse’
--	A storage container labeled ‘recs’
--	An index labeled ‘filerecs-autocreate’
--	An index labeled 'parse-autocreate’
--	An indexer labeled 'indexerparse-autocreate’
--	An indexer labeled 'indexerrec-auotcreate’
--	A data source connected to the ‘parse’ container
--	A data source connected to the ‘recs’ container
+
+#### Storage Account
+
+In addition to the resources created, the storage account and search service will have additional items created:
+
+- A storage container labeled `parse`
+- A storage container labeled `recs`
+
+#### Search Service
+-	An index labeled `filerecs-autocreate`
+-	An index labeled `parse-autocreate`
+-	An indexer labeled `indexerparse-autocreate`
+-	An indexer labeled `indexerrec-autocreate`
+-	A data source connected to the `parse` container
+-	A data source connected to the `recs` container
 
 ### Variables  
   

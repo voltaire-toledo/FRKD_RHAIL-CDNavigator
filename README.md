@@ -66,10 +66,10 @@ The SharePoint library should have the following structure :
 
 |Type|Internal Name|Required|
 |---|---|:---:|
-|Single line of text|Name|Yes|
+|Single line of text|Name|Yes (Default)|
 |Multiple lines of text|Message|Yes|
-|Datetime|Modified|Yes|
-|Person|ModifiedBy|Yes|
+|Datetime|Modified|System Managed|
+|Person|ModifiedBy|System Managed|
 
 ## Solution Components
 
@@ -108,23 +108,24 @@ CARC and RARC code definitions can be uploaded to the Dataverse table using the 
 
 ## Minimal Path to Awesome
 
-> For a full, step-by-step installation guide with prerequisites, expected outputs, and troubleshooting, see [docs/INSTALLATION.md](./docs/INSTALLATION.md).
+> For a full, step-by-step installation guide with prerequisites, expected outputs, and troubleshooting, see [docs/VT-INSTALL-INSTRUCTIONS.md](./docs/VT-INSTALL-INSTRUCTIONS.md).
 
 * [Download](./azureresources/) files in **azureresources** folder.
 * Replace parameter values in **AddResource.ps1** with your own and run the script.
-* Pack the solution source from the `solution` folder using the Power Apps CLI (see [Using the Source Code](#using-the-source-code) below) to produce `ClaimsDenialNavigator.zip`.
+* **Pack the Solution**: Use the Power Platform CLI to pack the source code from `solution_1.15.0.33/` into a file named `ClaimsDenialNavigator.zip`.
+* **Note on PDFs**: The PDFs shown in the installation video for the Azure `recs` container are located in the `data/` folder (if available) or must be provided by your organization; they are *not* inside the packed solution zip.
 * Within **https://make.powerapps.com**, import the `.zip` file via **Solutions** > **Import solution** > **Browse** and select the `.zip` file you just packed.
 * Click next. Create required connections and fill out environmental variables values.
 * Submit and import solution.
 
 ## Using the Source Code
 
-You can also use the [Power Apps CLI](https://aka.ms/pac/docs) to pack the source code by following these steps:
+You can also use the Power Platform CLI to pack the source code by following these steps:
 
 * Clone the repository to a local drive
 * Pack the source files back into `.zip` file:
   ```bash
-  pac solution pack --folder ./solution --zipfile ./ClaimsDenialNavigator.zip --packagetype Unmanaged
+  pac solution pack --folder ./src/ClaimsDenialNavigatorSolution --zipfile ./src/ClaimsDenialNavigator.zip --packagetype Unmanaged
   ```
   Making sure to replace `./solution` with the path to this repo's `solution` folder, and `./ClaimsDenialNavigator.zip` with your desired output path.
 * Within **https://make.powerapps.com**, import the `.zip` file via **Solutions** > **Import solution** > **Browse** and select the `.zip` file you just packed.
@@ -143,6 +144,3 @@ This repository is intended as a starting point for developers. It provides a ba
 
 - [Overview of creating apps in Power Apps](https://docs.microsoft.com/powerapps/maker/)
 - [Power Apps canvas apps documentation](https://docs.microsoft.com/en-us/powerapps/maker/canvas-apps/)
-
-
-

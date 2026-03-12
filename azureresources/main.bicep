@@ -25,13 +25,13 @@ param searchServicesName string = 'rhailsearch${uniqueString(resourceGroup().id)
 param accounts_RHAILAIDev_name string = 'RHAILModel${uniqueString(resourceGroup().id)}'
 
 @description('Azure OpenAI deployment name (this is the model deployment, not the account name)')
-param openAIDeploymentName string = 'gpt5${uniqueString(resourceGroup().id)}'
+param openAIDeploymentName string = 'gpt4omini${uniqueString(resourceGroup().id)}'
 
 @description('Azure OpenAI deployed model name')
-param openAIModelName string = 'gpt-5'
+param openAIModelName string = 'gpt-4o-mini'
 
-@description('Azure OpenAI deployed model version (latest listed in Foundry catalog)')
-param openAIModelVersion string = '2025-08-07'
+@description('Azure OpenAI deployed model version')
+param openAIModelVersion string = '2024-07-18'
 
 // Create storage account and containers
 resource storage 'Microsoft.Storage/storageAccounts@2023-05-01' = {
@@ -110,7 +110,7 @@ resource openAIDeployment 'Microsoft.CognitiveServices/accounts/deployments@2025
   name: openAIDeploymentName
   sku: {
     name: 'Standard'
-    capacity: 90
+    capacity: 10
   }
   properties: {
     model: {
@@ -123,11 +123,29 @@ resource openAIDeployment 'Microsoft.CognitiveServices/accounts/deployments@2025
   }
 }
 
+// Storage Account Outputs
 output storageAccountName string = storageAccountName
+output storageAccountPrimaryKey string = storage.listKeys().keys[0].value
+output storageAccountPrimaryEndpoint string = storage.properties.primaryEndpoints.blob
+output dataSourceConnectionString string = 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${storage.listKeys().keys[0].value};'
 output containerNameRec string = containerNameRec
 output containerNameParse string = containerNameParse
-output dataSourceConnectionString string = 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${storage.listKeys().keys[0].value};'
+
+// Azure Search Outputs
 output searchServicesName string = searchServicesName
+output searchServiceEndpoint string = 'https://${searchServicesName}.search.windows.net'
+output searchServicePrimaryKey string = searchServices.listAdminKeys().primaryKey
+output searchServiceQueryKey string = searchServices.listQueryKeys().value[0].key
+
+// Azure OpenAI Outputs
 output openAIAccountName string = accounts_RHAILAIDev_name
+output openAIEndpoint string = openAI.properties.endpoint
+output openAIAPIKey string = openAI.listKeys().key1
 output openAIDeploymentName string = openAIDeploymentName
+output openAIModelName string = openAIModelName
+output openAIModelVersion string = openAIModelVersion
 output openAIModel string = '${openAIModelName}:${openAIModelVersion}'
+
+// General Outputs
+output location string = location
+output resourceGroupName string = resourceGroup().name
